@@ -1,0 +1,37 @@
+python train_dual_memory.py \
+  --model models/My_ML1M_Base_V1 \
+  --preset e2_strong \
+  --epochs 28 \
+  --batch-size 256 \
+  --lr 5e-4 \
+  --lora-r 16 \
+  --alpha-weight 35 \
+  --beta-weight 240 \
+  --kl-reg-weight 6 \
+  --kl-mask-forgotten \
+  --freeze-lm-head \
+  --unlikelihood-weight 1.5 \
+  --pairwise-weight 0.8 \
+  --pairwise-margin 2.0 \
+  --hard-neg-k 50 \
+  --topk-penalty-weight 1.5 \
+  --topk-k 100 \
+  --topk-margin 0.4 \
+  --abs-suppression-weight 3.0 \
+  --abs-suppression-margin 3.5 \
+  --workers 12 \
+  --amp \
+  --output results/My_Unlearning_Run_E3_L20_abs
+
+  python evaluate_datasets.py \
+  --compare \
+  --original_model models/My_ML1M_Base_V1 \
+  --unlearned_model results/My_Unlearning_Run_E3_L20_abs/dual_memory_artifacts.pt \
+  --eval_sample_size 300 \
+  --k_values 10,20 \
+  --disable_fallback \
+  --skip_all_users \
+  --num_return_sequences 50 \
+  --num_beams 50 \
+  --max_gen_len 150 \
+  --verbose
